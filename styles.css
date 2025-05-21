@@ -3,6 +3,9 @@
     display: none;               /* Chrome, Safari, Edge */
   }
 
+
+
+
     body {
         font-family: "Capriola", sans-serif;
         font-weight: 400px;
@@ -83,6 +86,16 @@
         z-index: -1;
     }
 
+
+    .price{
+        background-color: #592202; 
+        color: antiquewhite;
+        border-radius: 10px; 
+        font-size: 24px; 
+        padding: 10px;
+    }
+
+
     .panel {
         animation: fade_in 0.5s ease forwards; 
         padding: 5%;
@@ -130,8 +143,34 @@
         justify-self: center;
         border-radius: 30px;
     }
+
+
+    #scroll-row{
+        justify-self: center;
+        width: 75%;
+        height: auto;
+        display: flex;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        gap: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+        scroll-snap-type: x mandatory;
+        white-space: nowrap;
+        scroll-behavior: smooth;
+    }
+
+
+    .menu{
+        width: 100%;
+        padding-bottom: 180px;
+
+    }
+
     .menu div {
         align-content: center;
+        overflow: visible;
+        
     }
     .menu img{
         width: 100%;

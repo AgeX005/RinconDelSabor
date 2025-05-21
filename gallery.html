@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>El Rincon Dulce</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Capriola&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+
+</head>
+
+<body>
+    <div class="background"></div>
+  
+
+    <div class="panel">
+
+        <div class="header">
+            <div class="title" style="flex-grow: 2;"> <b>El Rincón Dulce</b> </div>
+            <button style="flex-grow: 1;" onclick="window.location.href='./index.html'">Inicio</button>
+            <button style="flex-grow: 1;" onclick="window.location.href='./about.html'">Sobre Nosotros</button>
+            <button style="flex-grow: 1;" onclick="window.location.href='./contact.html'">Contacto</button>
+            <button style="flex-grow: 1;" onclick="window.location.href='./gallery.html'">Galeria</button>
+            <button style="flex-grow: 1;" onclick="window.location.href='./menu.html'" class="main_button">Menú</button>
+        </div>
+        <div class="menu">
+            
+            <div id="scroll-row"></div>
+            <br>
+            <h1>Clientes Felices</h1>
+        </div>
+
+    </div>
+
+</body>
+<script>
+    const container = document.getElementById('scroll-row');
+  
+    // Try loading images img1.jpg to img20.jpg from the 'images' folder
+    for (let i = 1; i <= 20; i++) {
+      const img = new Image();
+      img.src = `./gallery/img${i}.jpg`; // adjust to your actual path
+      img.style = `
+        width: 50%;
+        height: 100%;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        border-radius: 8px;
+        object-fit: cover;
+      `;
+  
+      img.onload = () => container.appendChild(img);
+      img.onerror = () => {}; // Ignore missing
+
+
+
+  // Auto-scroll logic
+    let scrollAmount = 0;
+    const scrollStep = 10; // pixels per tick
+    let lastScrollTime = Date.now();
+
+    // Detect user interaction
+    container.addEventListener('scroll', () => {
+      lastScrollTime = Date.now();
+      userScrolling = true;
+    });
+
+  function autoScroll() {
+        const now = Date.now();
+        // If user hasn't scrolled in the last 1000ms, resume auto-scroll
+        if (now - lastScrollTime > 1000) {
+            userScrolling = false;
+        }
+        
+        if(!userScrolling){
+            scrollAmount += scrollStep;
+            container.scrollLeft = scrollAmount;
+
+            // Loop back to start if reached end
+            if (container.scrollLeft + container.clientWidth >= container.scrollWidth-10) {
+            scrollAmount = 0;
+                console.log("asdasd");
+                
+            }
+        }else{
+            scrollAmount = container.scrollLeft;
+        }
+        
+
+        requestAnimationFrame(autoScroll);
+    }
+    
+    let lastScrollLeft = 0;
+    container.addEventListener('scroll', () => {
+      if (Math.abs(container.scrollLeft - lastScrollLeft) > 5) {
+        stopScrolling = true;
+      }
+      lastScrollLeft = container.scrollLeft;
+    });
+
+  // Start auto-scroll after a short delay to ensure images are loaded
+  setTimeout(() => {
+    requestAnimationFrame(autoScroll);
+  }, 500);
+
+    }
+  </script>
+</html>
