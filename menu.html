@@ -35,15 +35,15 @@
                     </p>
                 </div>
                 <div>
-                <img src="./images/dona_azucar.png">
-                <label class="price"> Q6.00 c/u</label>
+                    <img src="./images/dona_azucar.png">
+                    <button class="price" data-name="Dona de azucar" data-price="6"> Q6.00 c/u</button>
                 </div>
             </div>
 
             <div class="item" style="height: 400px;">
                 <div>
                     <img src="./images/dona_variada.png">
-                    <label class="price"> Q8.00 c/u</label>
+                    <button class="price" data-name="Dona" data-price="8"> Q8.00 c/u</button>
                 </div>
                 <div>
                     <h2>Donas variadas</h2>
@@ -63,14 +63,14 @@
                 </div>
                 <div>
                     <img src="./images/vanilla_muffin.png">
-                    <label class="price"> Q5.00 c/u</label>
+                    <button class="price" data-name="Muffin Classic" data-price="5"> Q5.00 c/u</button>
                 </div>
                 
             </div>
             <div class="item" style="height: 400px;">
                 <div>
                     <img src="./images/muffin_variado.png">
-                    <label class="price"> Q9.00 c/u</label>
+                    <button class="price" data-name="Muffin" data-price="9"> Q9.00 c/u</button>
                 </div>
                 
                 <div>
@@ -90,16 +90,16 @@
                 </div>
                 <div>
                     <img src="./images/cupcake.png">
-                    <label class="price"> Q8.00 c/u</label>
+                    <button class="price" data-name="Cupcake" data-price="8"> Q8.00 c/u</button>
                 </div>
                 
             </div>
             <div class="item" style="height: 400px;">
                 <div>
                     <img src="./images/galleta_variada.png">
-                    <label class="price"> Q5.00 c/u</label>
+                    <button class="price" data-name="Galleta" data-price="5"> Q5.00 c/u</button>
                     <br><br><br>
-                    <label class="price"> Q8.00 x2</label>
+                    <button class="price" data-name="Galleta (x2)" data-price="8"> Q8.00 x2</button>
                 </div>
                 
                 <div>
@@ -122,14 +122,14 @@
                 </div>
                 <div>
                     <img src="./images/strudel.png">
-                    <label class="price"> Q9.00 c/u</label>
+                    <button class="price" data-name="Strudel" data-price="9"> Q9.00 c/u</button>
                 </div>
                 
             </div>
             <div class="item" style="height: 400px;">
                 <div>
                     <img src="./images/hojaldres.png">
-                    <label class="price"> Q10.00 c/u</label>
+                    <button class="price" data-name="Hojaldre" data-price="10"> Q10.00 c/u</button>
                 </div>
                 
                 <div>
@@ -149,12 +149,20 @@
                 </div>
                 <div>
                     <img src="./images/rollo_canela.png">
-                    <label class="price"> Q5.00 c/u</label>
-                    <br><br><br>
-                    <label class="price"> Q8.00 x2</label>
+                    <button class="price" data-name="Rollo de canela" data-price="5"> Q5.00 c/u</button>
+                    <br><br>
+                    <button class="price" data-name="Rollo de canela (x2)" data-price="8"> Q8.00 x2</button>
                 </div>
             </div>
+            
 
+            <br>
+            <br>
+            
+            <div id="total">Carrito Vacío</div>
+            <br>
+            <br>
+            <button class="main_button" id="realizarPedido" style="padding: 20px;">Realizar Pedido</button>
 
 
         </div>
@@ -162,4 +170,71 @@
     </div>
 
 </body>
+
+<script>
+
+    function handleClick(event) {
+        const el = event.currentTarget;
+        const nombre = el.dataset.name;
+        const precio = parseFloat(el.dataset.price);
+
+        if (!pedido[nombre]) {
+        pedido[nombre] = { cantidad: 1, precio };
+        } else {
+        pedido[nombre].cantidad += 1;
+        }
+
+        actualizarTotal();
+    }
+
+    function actualizarTotal() {
+        total = 0;
+        let texto = "Carrito\n\n";
+        for (const nombre in pedido) {
+        const item = pedido[nombre];
+        total += item.cantidad * item.precio;
+        texto += `- ${nombre} x${item.cantidad} - Q${item.cantidad * item.precio}\n`;
+        }
+        texto += `\nTotal: Q${total}`;
+        totalDisplay.textContent = texto;
+    }
+
+    const pedido = {};
+    let total = 0;
+  
+    let elementos = document.getElementsByClassName("price"); 
+    const totalDisplay = document.getElementById("total");
+    
+    
+    for (let index = 0; index < elementos.length; index++) {
+        const element = elementos[index];
+        element.addEventListener("click", handleClick);
+    }
+
+    
+
+    // WhatsApp
+  document.getElementById("realizarPedido").addEventListener("click", () => {
+    if (Object.keys(pedido).length === 0) {
+      alert("El carrito está vacío");
+      return;
+    }
+    const numeroPedido = Math.floor(1000 + Math.random() * 9000);
+    const numeroWhatsApp = "50245274363";
+    let mensaje = "Hola! Quiero realizar un pedido: \n";
+    for (const nombre in pedido) {
+      const item = pedido[nombre];
+      mensaje += `- ${nombre} x${item.cantidad} \n`;
+    }
+    mensaje = mensaje.slice(0, -2); // quitar última coma
+    mensaje += `\nTotal Q${total}\nPedido #${numeroPedido} (Autogenerado)`;
+
+    const mensajeFinal = encodeURIComponent(mensaje);
+    const url = `https://wa.me/${numeroWhatsApp}?text=${mensajeFinal}`;
+
+    window.open(url, "_blank");
+  });
+
+</script>
+
 </html>
